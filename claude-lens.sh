@@ -6,7 +6,7 @@
 # Must complete within ~35ms. All modules are inline functions.
 
 # === Constants ===
-readonly VERSION="1.0.0"
+readonly VERSION="0.2.0"
 readonly CACHE_PREFIX="/tmp/claude-lens"
 
 # ANSI colors
