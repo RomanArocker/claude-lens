@@ -128,8 +128,17 @@ _pace() {
   ((d < -10)) && printf " ${R}%d%%${N}" "$d"
 }
 
+# Reset countdown: >=1h show hours, <1h show minutes, >=24h show days
+_rc() {
+  [[ "$1" =~ ^[0-9]+$ ]] || return
+  local m=$1; ((m>=1440)) && { printf " ${D}(%dd)${N}" $((m/1440)); return; }
+  ((m>=60)) && { printf " ${D}(%dh)${N}" $((m/60)); return; }
+  printf " ${D}(%dm)${N}" "$m"
+}
 L2="${BC}${BAR}${N} ${PCT}% of ${CL}"
-L2+=" | 5h: $(_uf "$U5")$(_pace "$U5" "$RM5" 300) | 7d: $(_uf "$U7")$(_pace "$U7" "$RM7" 10080)"
+L2+=" | 5h: $(_uf "$U5")$(_pace "$U5" "$RM5" 300)$(_rc "$RM5")"
+L2+=" | 7d: $(_uf "$U7")$(_pace "$U7" "$RM7" 10080)"
+[[ "$U7" =~ ^[0-9]+$ ]] && ((U7>=70)) && L2+="$(_rc "$RM7")"
 # Show extra usage only when enabled and 5h quota is nearly exhausted; low usage is noise
 [ "$XO" = 1 ] && [[ "$U5" =~ ^[0-9]+$ ]] && ((U5>=80)) && \
   printf -v _XS " | \$%d.%02d/\$%d.%02d" $((XU/100)) $((XU%100)) $((XL/100)) $((XL%100)) && L2+="$_XS"
