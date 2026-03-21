@@ -70,7 +70,7 @@ if [[ "$HAS_RL" == "1" ]]; then
   # Guard: resets_at=0 means field missing, leave RM empty so _pace/_rc skip it
   RM5=""; ((R5>0)) && { RM5=$(( (R5 - NOW) / 60 )); ((RM5<0)) && RM5=0; }
   RM7=""; ((R7>0)) && { RM7=$(( (R7 - NOW) / 60 )); ((RM7<0)) && RM7=0; }
-  XO=0 XU=0 XL=0
+  # Extra usage (XO/XU/XL) only available via API fallback; stdin lacks this data
 else
   # ── API fallback (remove when CC <2.1.80 no longer supported) ──
   UC="/tmp/claude-sl-usage" UL="/tmp/claude-sl-usage.lock"
