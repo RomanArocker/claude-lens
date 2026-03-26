@@ -219,10 +219,10 @@ _usage() {
   else
     if ((u >= 90)); then printf "${R}%d%%${N}" "$u"; elif ((u >= 70)); then printf "${Y}%d%%${N}" "$u"; else printf "${G}%d%%${N}" "$u"; fi
     if [[ "$rm" =~ ^[0-9]+$ ]] && ((rm <= w)); then
-      # Pace delta: positive = budget surplus (ahead of linear burn), negative = overspend.
-      local d=$(((w - rm) * 100 / w - u))
-      ((d > 5)) && printf " ${G}+%d%%${N}" "$d"
-      ((d < -5)) && printf " ${R}%d%%${N}" "$d"
+      # Pace delta: positive = over pace (overspend), negative = under pace (surplus).
+      local d=$((u - (w - rm) * 100 / w))
+      ((d > 5)) && printf " ${R}⇡%d%%${N}" "$d"
+      ((d < -5)) && printf " ${G}⇣%d%%${N}" "${d#-}"
     fi
   fi
   [[ "$rm" =~ ^[0-9]+$ ]] || return
